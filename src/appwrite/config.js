@@ -92,13 +92,53 @@ export class Service{
                 conf.appwriteCollectionId,
                 queries
             )
+            return true
         } catch (error) {
             console.log("Appwrite Service GetPosts Error",error);
+            return false
         }
     }
 
+    async uploadFile(file){
+        try {
+            return await this.bucket.createFile(
+                conf.appwriteBucketId,
+                ID.unique(),
+                file
+            )
+            return true
+            
+        } catch (error) {
+            console.log("Appwrite Service Upload file Error",error);
+            return false
+        }
+    }
     
+    async deleteFile(fileId){
+        try {
+            await this.bucket.deleteFile(
+                conf.appwriteBucketId,
+                fileId
+            )
+           return true 
+        } catch (error) {
+            console.log("Appwrite Service delete file  Error",error);
+            return false
+        }
+
+    }
+
+    getFilePreview(fileId){
+        return this.bucket.getFilePreview(
+            conf.appwriteBucketId,
+            fileId
+        )
+    }
 
 
 }
+
+const service=new Service()
+
+export default service
 
